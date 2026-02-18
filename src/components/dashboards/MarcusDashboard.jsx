@@ -4,12 +4,12 @@ import { FOOD } from '../../data/food';
 
 const QUICK_WINS = ["hotdog", "queso", "chicken"];
 
-export function MarcusDashboard({ persona, onRecipeClick, onRecipesTabClick, onGrillTabClick, onHelpTabClick, onPlannerTabClick, onContentTabClick }) {
+export function MarcusDashboard({ persona, onRecipeClick, onRecipesTabClick, onGrillTabClick, onHelpTabClick, onPlannerTabClick, onContentTabClick, noNav }) {
   const t = persona.textColor;
   const a = persona.accent;
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: "#FAFAFA" }}>
-      <div className="flex-1 p-6 max-w-lg mx-auto">
+      <div className="flex-1 p-6 pb-20 max-w-lg mx-auto overflow-auto">
         {/* What Should I Cook? — primary CTA */}
         <button
           className="w-full py-5 rounded-2xl font-bold text-lg mb-8 shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-3"
@@ -66,21 +66,22 @@ export function MarcusDashboard({ persona, onRecipeClick, onRecipesTabClick, onG
         </div>
       </div>
 
-      {/* Bottom nav — four labeled items */}
-      <nav className="flex justify-around py-4 border-t bg-white">
-        {[
-          { icon: "cook", label: "Cook" },
-          { icon: "recipes", label: "Recipes" },
-          { icon: "help", label: "Help" },
-          { icon: "content", label: "Learn" },
-          { icon: "planner", label: "Plan" },
-        ].map(({ icon, label }) => (
-          <button key={label} onClick={label === "Recipes" ? onRecipesTabClick : label === "Cook" ? onGrillTabClick : label === "Help" ? onHelpTabClick : label === "Plan" ? onPlannerTabClick : label === "Learn" ? onContentTabClick : undefined} className="flex flex-col items-center gap-1 text-sm" style={{ color: a }}>
-            <Icon name={icon} size={22} />
-            <span className="font-medium">{label}</span>
-          </button>
-        ))}
-      </nav>
+      {!noNav && (
+        <nav className="sticky bottom-0 left-0 right-0 z-10 flex justify-around py-4 border-t bg-white w-full">
+          {[
+            { icon: "cook", label: "Cook" },
+            { icon: "recipes", label: "Recipes" },
+            { icon: "help", label: "Help" },
+            { icon: "content", label: "Learn" },
+            { icon: "planner", label: "Plan" },
+          ].map(({ icon, label }) => (
+            <button key={label} onClick={label === "Recipes" ? onRecipesTabClick : label === "Cook" ? onGrillTabClick : label === "Help" ? onHelpTabClick : label === "Plan" ? onPlannerTabClick : label === "Learn" ? onContentTabClick : undefined} className="flex flex-col items-center gap-1 text-sm" style={{ color: a }}>
+              <Icon name={icon} size={22} />
+              <span className="font-medium">{label}</span>
+            </button>
+          ))}
+        </nav>
+      )}
     </div>
   );
 }

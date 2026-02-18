@@ -9,6 +9,7 @@ export { MealPlannerSection } from './MealPlannerSection';
 export { ContentSection } from './ContentSection';
 export { FoodThumb } from './FoodThumb';
 export { FoodImage } from './FoodImage';
+export { ImagePlaceholder } from './ImagePlaceholder';
 export { MiniSliderBars } from './MiniSliderBars';
 export { BaseballCard } from './BaseballCard';
 export { BuildYourOwnCard } from './BuildYourOwnCard';

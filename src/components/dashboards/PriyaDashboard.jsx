@@ -6,13 +6,13 @@ import { FOOD } from '../../data/food';
 const INSPIRING = ["salmon", "mole", "gochujang"];
 const SUGGESTION = "thaifish";
 
-export function PriyaDashboard({ persona, onRecipeClick, onRecipesTabClick, onGrillTabClick, onHelpTabClick, onPlannerTabClick, onContentTabClick }) {
+export function PriyaDashboard({ persona, onRecipeClick, onRecipesTabClick, onGrillTabClick, onHelpTabClick, onPlannerTabClick, onContentTabClick, noNav }) {
   const t = "#5C3A1E";
   const a = persona.accent;
 
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: "#FFF8F0" }}>
-      <div className="flex-1 p-5 max-w-lg mx-auto">
+      <div className="flex-1 p-5 pb-20 max-w-lg mx-auto overflow-auto">
         {/* What's Inspiring Cooks This Week — carousel */}
         <div className="mb-6">
           <h3 className="text-sm font-semibold mb-3" style={{ color: t }}>What&apos;s Inspiring Cooks This Week</h3>
@@ -72,22 +72,23 @@ export function PriyaDashboard({ persona, onRecipeClick, onRecipesTabClick, onGr
         </div>
       </div>
 
-      <nav className="flex justify-around py-4 border-t bg-white">
-        {[
-          { icon: "home", label: "Home" },
-          { icon: "discover", label: "Discover" },
-          { icon: "grill", label: "Grill" },
-          { icon: "recipes", label: "Recipes" },
-          { icon: "help", label: "Help" },
-          { icon: "planner", label: "Plan" },
-          { icon: "content", label: "Content" },
-        ].map(({ icon, label }) => (
-          <button key={label} onClick={label === "Recipes" ? onRecipesTabClick : label === "Grill" ? onGrillTabClick : label === "Help" ? onHelpTabClick : label === "Plan" ? onPlannerTabClick : label === "Content" ? onContentTabClick : undefined} className="flex flex-col items-center gap-1 text-sm" style={{ color: label === "Discover" ? a : "#888" }}>
-            <Icon name={icon} size={22} />
-            <span className="font-medium">{label}</span>
-          </button>
-        ))}
-      </nav>
+      {!noNav && (
+        <nav className="sticky bottom-0 left-0 right-0 z-10 flex justify-around py-4 border-t bg-white w-full">
+          {[
+            { icon: "home", label: "Home" },
+            { icon: "discover", label: "Discover" },
+            { icon: "grill", label: "Grill" },
+            { icon: "recipes", label: "Recipes" },
+            { icon: "help", label: "Help" },
+            { icon: "planner", label: "Plan" },
+          ].map(({ icon, label }) => (
+            <button key={label} onClick={label === "Recipes" ? onRecipesTabClick : label === "Grill" ? onGrillTabClick : label === "Help" ? onHelpTabClick : label === "Plan" ? onPlannerTabClick : label === "Discover" ? onContentTabClick : undefined} className="flex flex-col items-center gap-1 text-sm" style={{ color: label === "Discover" ? a : "#888" }}>
+              <Icon name={icon} size={22} />
+              <span className="font-medium">{label}</span>
+            </button>
+          ))}
+        </nav>
+      )}
     </div>
   );
 }

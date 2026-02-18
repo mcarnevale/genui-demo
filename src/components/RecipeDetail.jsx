@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FoodImage } from './FoodImage';
 import { Icon } from './Icon';
+import { ImagePlaceholder } from './ImagePlaceholder';
 import { FOOD } from '../data/food';
 import { RECIPES } from '../data/recipes';
 import { BROWSE } from '../data/recipeBrowse';
@@ -142,6 +143,7 @@ export function RecipeDetail({ foodKey, persona, onBack }) {
             <div className="space-y-6">
               <div className="p-6 rounded-2xl bg-white border-2 shadow-sm" style={{ borderColor: a + '40' }}>
                 <div className="text-xs text-gray-500 mb-2">Step {stepIdx + 1} of {r.steps.length}</div>
+                <ImagePlaceholder aspect="4/3" className="mb-4 rounded-xl" prompt={r.steps[stepIdx].image || `A picture showing this step`} />
                 <p className="text-lg font-medium mb-4" style={{ color: '#333' }}>{r.steps[stepIdx].text}</p>
                 {r.steps[stepIdx].time && <p className="text-sm text-gray-500">~{r.steps[stepIdx].time}</p>}
                 <div className="mt-6 flex gap-3">

@@ -8,13 +8,13 @@ const TRENDING = ["beetroot", "cauliflwr", "gochujang"];
 const SHARED = ["mole", "pizza", "peach"];
 const SEASONAL = ["macncheese", "burger", "queso"];
 
-export function SofiaDashboard({ persona, onRecipeClick, onRecipesTabClick, onGrillTabClick, onHelpTabClick, onPlannerTabClick, onContentTabClick }) {
+export function SofiaDashboard({ persona, onRecipeClick, onRecipesTabClick, onGrillTabClick, onHelpTabClick, onPlannerTabClick, onContentTabClick, noNav }) {
   const t = "#2D3B2D";
   const a = persona.accent;
 
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: "#FAFAF8" }}>
-      <div className="flex-1 p-5 max-w-lg mx-auto">
+      <div className="flex-1 p-5 pb-20 max-w-lg mx-auto overflow-auto">
         {/* Trending This Week — masonry-style */}
         <div className="mb-6">
           <h3 className="text-sm font-semibold mb-3" style={{ color: t }}>Trending This Week</h3>
@@ -80,22 +80,24 @@ export function SofiaDashboard({ persona, onRecipeClick, onRecipesTabClick, onGr
         </div>
       </div>
 
-      <nav className="flex justify-around py-4 border-t bg-white">
-        {[
-          { icon: "home", label: "Home" },
-          { icon: "discover", label: "Discover" },
-          { icon: "grill", label: "Grill" },
-          { icon: "help", label: "Help" },
-          { icon: "planner", label: "Plan" },
-          { icon: "camera", label: "My Cooks" },
-          { icon: "recipes", label: "Recipes" },
-        ].map(({ icon, label }) => (
-          <button key={label} onClick={label === "Recipes" ? onRecipesTabClick : label === "Grill" ? onGrillTabClick : label === "Help" ? onHelpTabClick : label === "Plan" ? onPlannerTabClick : label === "Discover" ? onContentTabClick : undefined} className="flex flex-col items-center gap-1 text-sm font-light" style={{ color: label === "Discover" ? a : "#888" }}>
-            <Icon name={icon} size={20} />
-            <span>{label}</span>
-          </button>
-        ))}
-      </nav>
+      {!noNav && (
+        <nav className="sticky bottom-0 left-0 right-0 z-10 flex justify-around py-4 border-t bg-white w-full">
+          {[
+            { icon: "home", label: "Home" },
+            { icon: "discover", label: "Discover" },
+            { icon: "grill", label: "Grill" },
+            { icon: "help", label: "Help" },
+            { icon: "planner", label: "Plan" },
+            { icon: "camera", label: "My Cooks" },
+            { icon: "recipes", label: "Recipes" },
+          ].map(({ icon, label }) => (
+            <button key={label} onClick={label === "Recipes" ? onRecipesTabClick : label === "Grill" ? onGrillTabClick : label === "Help" ? onHelpTabClick : label === "Plan" ? onPlannerTabClick : label === "Discover" ? onContentTabClick : undefined} className="flex flex-col items-center gap-1 text-sm font-light" style={{ color: label === "Discover" ? a : "#888" }}>
+              <Icon name={icon} size={20} />
+              <span>{label}</span>
+            </button>
+          ))}
+        </nav>
+      )}
     </div>
   );
 }

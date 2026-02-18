@@ -6,7 +6,7 @@ import { FOOD } from '../../data/food';
 const RECIPES = ["brisket", "ribs", "pork", "chicken"];
 const SUGGESTION = "mole";
 
-export function WaltDashboard({ persona, onRecipeClick, onRecipesTabClick, onGrillTabClick, onHelpTabClick, onPlannerTabClick, onContentTabClick }) {
+export function WaltDashboard({ persona, onRecipeClick, onRecipesTabClick, onGrillTabClick, onHelpTabClick, onPlannerTabClick, onContentTabClick, noNav }) {
   const t = persona.textColor;
   const a = persona.accent;
 
@@ -19,7 +19,7 @@ export function WaltDashboard({ persona, onRecipeClick, onRecipesTabClick, onGri
       </div>
 
       {/* Your Recipes — 4 large cards, just name + photo */}
-      <div className="flex-1 px-6 pb-6 max-w-lg mx-auto">
+      <div className="flex-1 px-6 pb-20 max-w-lg mx-auto overflow-auto">
         <h3 className="text-lg font-bold mb-4" style={{ color: t }}>Your Recipes</h3>
         <div className="grid grid-cols-2 gap-4">
           {RECIPES.map(key => {
@@ -57,20 +57,22 @@ export function WaltDashboard({ persona, onRecipeClick, onRecipesTabClick, onGri
         </div>
       </div>
 
-      <nav className="flex justify-around py-5 border-t" style={{ borderColor: "#2A2520" }}>
-        {[
-          { icon: "grill", label: "Grill" },
-          { icon: "recipes", label: "Recipes" },
-          { icon: "help", label: "Help" },
-          { icon: "planner", label: "Weekend" },
-          { icon: "content", label: "Pit" },
-        ].map(({ icon, label }) => (
-          <button key={label} onClick={label === "Recipes" ? onRecipesTabClick : label === "Grill" ? onGrillTabClick : label === "Help" ? onHelpTabClick : label === "Weekend" ? onPlannerTabClick : label === "Pit" ? onContentTabClick : undefined} className="flex flex-col items-center gap-1.5 text-base font-medium" style={{ color: t }}>
-            <Icon name={icon} size={26} />
-            <span>{label}</span>
-          </button>
-        ))}
-      </nav>
+      {!noNav && (
+        <nav className="sticky bottom-0 left-0 right-0 z-10 flex justify-around py-5 border-t w-full" style={{ borderColor: "#2A2520" }}>
+          {[
+            { icon: "grill", label: "Grill" },
+            { icon: "recipes", label: "Recipes" },
+            { icon: "help", label: "Help" },
+            { icon: "planner", label: "Weekend" },
+            { icon: "content", label: "Pit" },
+          ].map(({ icon, label }) => (
+            <button key={label} onClick={label === "Recipes" ? onRecipesTabClick : label === "Grill" ? onGrillTabClick : label === "Help" ? onHelpTabClick : label === "Weekend" ? onPlannerTabClick : label === "Pit" ? onContentTabClick : undefined} className="flex flex-col items-center gap-1.5 text-base font-medium" style={{ color: t }}>
+              <Icon name={icon} size={26} />
+              <span>{label}</span>
+            </button>
+          ))}
+        </nav>
+      )}
     </div>
   );
 }

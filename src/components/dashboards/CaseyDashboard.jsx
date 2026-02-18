@@ -6,13 +6,13 @@ import { FOOD } from '../../data/food';
 const FLAVOR_PINS = ["Korean", "Argentine", "Southern", "Japanese"];
 const BOOKMARKS = ["gochujang", "mole", "thaifish"];
 
-export function CaseyDashboard({ persona, onRecipeClick, onRecipesTabClick, onGrillTabClick, onHelpTabClick, onPlannerTabClick, onContentTabClick }) {
+export function CaseyDashboard({ persona, onRecipeClick, onRecipesTabClick, onGrillTabClick, onHelpTabClick, onPlannerTabClick, onContentTabClick, noNav }) {
   const t = persona.textColor;
   const a = persona.accent;
 
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: "#F5EDE8" }}>
-      <div className="flex-1 p-5 max-w-lg mx-auto">
+      <div className="flex-1 p-5 pb-20 max-w-lg mx-auto overflow-auto">
         {/* Flavor Map — stylized world pins */}
         <div className="mb-6 p-4 rounded-2xl" style={{ backgroundColor: "white", border: `2px solid ${a}30`, boxShadow: "0 4px 12px rgba(0,0,0,0.05)" }}>
           <h3 className="text-sm font-bold mb-3" style={{ color: "#3A2A20" }}>Flavor Map</h3>
@@ -69,20 +69,22 @@ export function CaseyDashboard({ persona, onRecipeClick, onRecipesTabClick, onGr
         </div>
       </div>
 
-      <nav className="flex justify-around py-4 border-t bg-white">
-        {[
-          { icon: "discover", label: "Explore" },
-          { icon: "cook", label: "Cook" },
-          { icon: "recipes", label: "Recipes" },
-          { icon: "help", label: "Help" },
-          { icon: "planner", label: "Plan" },
-        ].map(({ icon, label }) => (
-          <button key={label} onClick={label === "Cook" ? onGrillTabClick : label === "Recipes" ? onRecipesTabClick : label === "Help" ? onHelpTabClick : label === "Plan" ? onPlannerTabClick : label === "Explore" ? onContentTabClick : undefined} className="flex flex-col items-center gap-1 text-sm font-medium" style={{ color: label === "Explore" ? a : "#888" }}>
-            <Icon name={icon} size={22} />
-            <span>{label}</span>
-          </button>
-        ))}
-      </nav>
+      {!noNav && (
+        <nav className="sticky bottom-0 left-0 right-0 z-10 flex justify-around py-4 border-t bg-white w-full">
+          {[
+            { icon: "discover", label: "Explore" },
+            { icon: "cook", label: "Cook" },
+            { icon: "recipes", label: "Recipes" },
+            { icon: "help", label: "Help" },
+            { icon: "planner", label: "Plan" },
+          ].map(({ icon, label }) => (
+            <button key={label} onClick={label === "Cook" ? onGrillTabClick : label === "Recipes" ? onRecipesTabClick : label === "Help" ? onHelpTabClick : label === "Plan" ? onPlannerTabClick : label === "Explore" ? onContentTabClick : undefined} className="flex flex-col items-center gap-1 text-sm font-medium" style={{ color: label === "Explore" ? a : "#888" }}>
+              <Icon name={icon} size={22} />
+              <span>{label}</span>
+            </button>
+          ))}
+        </nav>
+      )}
     </div>
   );
 }

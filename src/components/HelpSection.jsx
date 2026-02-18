@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Icon } from './Icon';
+import { ImagePlaceholder } from './ImagePlaceholder';
 
 /** Dave: Troubleshooting-first — search bar, categories by issue type. Direct and technical. */
 function DaveHelp({ persona }) {
   const t = persona.textColor;
   const a = persona.accent;
-  const [expanded, setExpanded] = useState(null);
+  const [expanded, setExpanded] = useState("0-0");
 
   const categories = [
     {
@@ -91,7 +92,7 @@ function DaveHelp({ persona }) {
 /** Priya: Learning-forward — concepts, not troubleshooting. Understanding Smoke, Temp Management, etc. */
 function PriyaHelp({ persona }) {
   const a = persona.accent;
-  const [expanded, setExpanded] = useState(null);
+  const [expanded, setExpanded] = useState(0);
 
   const concepts = [
     {
@@ -160,6 +161,7 @@ function PriyaHelp({ persona }) {
               </button>
               {isOpen && (
                 <div className="px-5 pb-5 pt-0">
+                  <ImagePlaceholder aspect="video" video prompt={`A picture of ${c.title.toLowerCase()}`} className="mb-4 rounded-lg" />
                   <p className="text-sm leading-relaxed" style={{ color: "#5C3A1E" }}>{c.content}</p>
                   <button className="mt-3 text-sm font-medium" style={{ color: a }}>Learn More</button>
                 </div>
@@ -175,7 +177,7 @@ function PriyaHelp({ persona }) {
 /** Tom & Linda: Task-oriented, large tap targets. Common questions with step-by-step answers. */
 function TomLindaHelp({ persona }) {
   const a = persona.accent;
-  const [expanded, setExpanded] = useState(null);
+  const [expanded, setExpanded] = useState(0);
 
   const questions = [
     { q: "How do I start the grill?", steps: ["1. Fill pellet hopper with dry pellets.", "2. Open lid, set dial to Smoke.", "3. Press Ignite and wait 4–5 min for smoke.", "4. Set target temp. Grill will reach it in ~15 min."] },
@@ -224,7 +226,7 @@ function TomLindaHelp({ persona }) {
 /** Marcus: Friendly FAQ, short answers, "First Timer?" section. Warm and encouraging. */
 function MarcusHelp({ persona }) {
   const a = persona.accent;
-  const [expanded, setExpanded] = useState(null);
+  const [expanded, setExpanded] = useState(0);
 
   const faq = [
     { q: "What are pellets?", a: "Wood pellets are compressed sawdust. They feed into a burn pot where they ignite and produce heat and smoke. Different woods (hickory, apple, cherry) add different flavors. Traeger pellets are food-safe and designed for pellet grills." },
@@ -385,7 +387,7 @@ function JenHelp({ persona }) {
 function RayHelp({ persona }) {
   const t = persona.textColor;
   const a = persona.accent;
-  const [expanded, setExpanded] = useState(null);
+  const [expanded, setExpanded] = useState(0);
 
   const sections = [
     {
@@ -450,7 +452,7 @@ function RayHelp({ persona }) {
 /** Sofia: Technique help + Content Tips (photography, plating). Peer-to-peer tone. */
 function SofiaHelp({ persona }) {
   const a = persona.accent;
-  const [expanded, setExpanded] = useState(null);
+  const [expanded, setExpanded] = useState(0);
 
   const sections = [
     { title: "Low & Slow Basics", content: "225–250°F for maximum smoke. Patience is the secret. The stall at 160°F is normal — wrap or wait. Bark forms in the last few degrees. Great for brisket, pork shoulder, ribs.", video: true },
@@ -476,6 +478,7 @@ function SofiaHelp({ persona }) {
               </button>
               {isOpen && (
                 <div className="px-5 pb-5 pt-0">
+                  {s.video && <ImagePlaceholder aspect="video" video prompt={`A picture of ${s.title.toLowerCase()}`} className="mb-4 rounded-lg" />}
                   <p className="text-sm leading-relaxed" style={{ color: "#2D3B2D" }}>{s.content}</p>
                   {s.video && <span className="inline-flex items-center gap-1.5 mt-2 text-sm" style={{ color: a }}><Icon name="play" size={16} /> Watch</span>}
                 </div>
@@ -492,7 +495,7 @@ function SofiaHelp({ persona }) {
 function WaltHelp({ persona }) {
   const t = persona.textColor;
   const a = persona.accent;
-  const [expanded, setExpanded] = useState(null);
+  const [expanded, setExpanded] = useState("Grill Maintenance-0");
 
   const categories = [
     {
@@ -566,7 +569,7 @@ function WaltHelp({ persona }) {
 /** Casey: Techniques by tradition, Ingredient Guide, Substitution Guide. Curious and informative. */
 function CaseyHelp({ persona }) {
   const a = persona.accent;
-  const [expanded, setExpanded] = useState(null);
+  const [expanded, setExpanded] = useState(0);
 
   const sections = [
     {

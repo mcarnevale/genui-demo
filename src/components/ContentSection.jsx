@@ -1,26 +1,4 @@
-/**
- * Curated Content section — persona-specific layouts.
- * Uses rectangles as image placeholders with correct aspect ratios.
- */
-
-/** Image placeholder — rectangle matching the size/proportion of the image it represents. */
-function ImagePlaceholder({ aspect = "video", className = "" }) {
-  const aspectClass = {
-    video: "aspect-video",       // 16:9 — hero, banner, wide
-    square: "aspect-square",     // 1:1 — cards, thumbnails
-    "4/3": "aspect-[4/3]",       // 4:3 — recipe cards
-    "3/4": "aspect-[3/4]",       // 3:4 — portrait, profile
-    "2/1": "aspect-[2/1]",       // 2:1 — landscape feature
-  }[aspect] || "aspect-video";
-  return (
-    <div
-      className={`w-full ${aspectClass} bg-neutral-200 flex items-center justify-center text-neutral-400 text-xs shrink-0 ${className}`}
-      aria-hidden
-    >
-      —
-    </div>
-  );
-}
+import { ImagePlaceholder } from './ImagePlaceholder';
 
 /** Dave: "From the Pit" — single long-form card, craft-focused, minimal. */
 function DaveContent({ persona }) {
@@ -37,7 +15,7 @@ function DaveContent({ persona }) {
     <div className="flex-1 flex flex-col overflow-auto p-4" style={{ backgroundColor: "#1C1210" }}>
       <div className="text-xs font-mono uppercase tracking-wider opacity-60 mb-3" style={{ color: t }}>From the Pit</div>
       <article className="rounded-lg overflow-hidden" style={{ backgroundColor: "#251A15", border: "1px solid rgba(255,255,255,0.06)" }}>
-        <ImagePlaceholder aspect="2/1" className="w-full" />
+        <ImagePlaceholder aspect="2/1" className="w-full" prompt="A picture of a cross-section of smoked brisket showing the pink smoke ring" />
         <div className="p-4">
           <span className="text-[10px] font-mono uppercase opacity-50" style={{ color: t }}>{article.type}</span>
           <h2 className="text-base font-mono font-bold mt-1 mb-2" style={{ color: t }}>{article.title}</h2>
@@ -55,9 +33,9 @@ function PriyaContent({ persona }) {
   const a = persona.accent;
 
   const items = [
-    { type: "video", title: "Smoking with Mole — Oaxacan Technique", tag: "2 min", aspect: "video", badge: "12K cooks" },
-    { type: "article", title: "Pitmaster Interview: Tea-Smoked Trout", tag: "8 min read", aspect: "4/3", badge: "Technique" },
-    { type: "article", title: "The Smoke Traditions of South America", tag: "Long Form", aspect: "video", badge: null },
+    { type: "video", title: "Smoking with Mole — Oaxacan Technique", tag: "2 min", aspect: "video", badge: "12K cooks", prompt: "A picture of Oaxacan mole paste in a traditional clay pot" },
+    { type: "article", title: "Pitmaster Interview: Tea-Smoked Trout", tag: "8 min read", aspect: "4/3", badge: "Technique", prompt: "A picture of tea-smoked trout on a wooden board" },
+    { type: "article", title: "The Smoke Traditions of South America", tag: "Long Form", aspect: "video", badge: null, prompt: "A picture of an Argentine asado grill with meat smoking" },
   ];
 
   return (
@@ -67,7 +45,7 @@ function PriyaContent({ persona }) {
         {items.map((item, i) => (
           <article key={i} className="rounded-xl overflow-hidden" style={{ backgroundColor: "white", border: "1px solid rgba(232,151,107,0.2)" }}>
             <div className="relative">
-              <ImagePlaceholder aspect={item.aspect} />
+              <ImagePlaceholder aspect={item.aspect} prompt={item.prompt} />
               <span className="absolute top-2 right-2 text-[10px] px-2 py-1 rounded" style={{ backgroundColor: "rgba(0,0,0,0.5)", color: "white" }}>{item.tag}</span>
               {item.badge && <span className="absolute bottom-2 left-2 text-[10px] px-2 py-0.5 rounded" style={{ backgroundColor: a + "90", color: "white" }}>{item.badge}</span>}
             </div>
@@ -88,8 +66,8 @@ function TomLindaContent({ persona }) {
   const a = persona.accent;
 
   const items = [
-    { title: "What Other Hosts Are Cooking This Weekend", image: "video", desc: "Popular entertaining menus" },
-    { title: "Memorial Day Menu Ideas", image: "4/3", desc: "Three-course grilled dinner" },
+    { title: "What Other Hosts Are Cooking This Weekend", image: "video", desc: "Popular entertaining menus", prompt: "A picture of grilled appetizers and mains on an outdoor table" },
+    { title: "Memorial Day Menu Ideas", image: "4/3", desc: "Three-course grilled dinner", prompt: "A picture of a Memorial Day grill spread with ribs, corn, and coleslaw" },
   ];
 
   return (
@@ -98,7 +76,7 @@ function TomLindaContent({ persona }) {
       <div className="space-y-6">
         {items.map((item, i) => (
           <article key={i} className="rounded-2xl overflow-hidden" style={{ backgroundColor: "white", border: "2px solid rgba(196,154,108,0.2)" }}>
-            <ImagePlaceholder aspect={item.image} />
+            <ImagePlaceholder aspect={item.image} prompt={item.prompt} />
             <div className="p-5">
               <h3 className="text-lg font-bold" style={{ color: t }}>{item.title}</h3>
               <p className="text-sm text-gray-600 mt-1">{item.desc}</p>
@@ -124,8 +102,8 @@ function MarcusContent({ persona }) {
   ];
 
   const tips = [
-    { title: "3 Things Every New Griller Gets Wrong", aspect: "video" },
-    { title: "The Only Rub Recipe You Need to Start", aspect: "square" },
+    { title: "3 Things Every New Griller Gets Wrong", aspect: "video", prompt: "A picture of a thermometer in meat on a grill" },
+    { title: "The Only Rub Recipe You Need to Start", aspect: "square", prompt: "A picture of spice rub in small bowls" },
   ];
 
   return (
@@ -145,7 +123,7 @@ function MarcusContent({ persona }) {
       <div className="space-y-4">
         {tips.map((tip, i) => (
           <div key={i} className="rounded-xl overflow-hidden" style={{ backgroundColor: "white", border: "1px solid #E0E0E0" }}>
-            <ImagePlaceholder aspect={tip.aspect} />
+            <ImagePlaceholder aspect={tip.aspect} prompt={tip.prompt} />
             <div className="p-4">
               <h4 className="font-semibold" style={{ color: t }}>{tip.title}</h4>
             </div>
@@ -165,7 +143,7 @@ function JenContent({ persona }) {
     <div className="flex-1 flex flex-col overflow-auto p-5" style={{ backgroundColor: "#FFFBF5" }}>
       <h2 className="text-sm font-semibold uppercase tracking-wider text-gray-500 mb-4">New This Week</h2>
       <article className="rounded-xl overflow-hidden" style={{ backgroundColor: "white", border: "1px solid #EEE8E0" }}>
-        <ImagePlaceholder aspect="4/3" />
+        <ImagePlaceholder aspect="4/3" prompt="A picture of marinade bowls with chicken and vegetables" />
         <div className="p-4">
           <h3 className="font-bold" style={{ color: t }}>5 Weeknight Marinades That Work on Any Protein</h3>
           <p className="text-sm text-gray-500 mt-1">Same 40 minutes as your go-to chicken. Rotate through the week.</p>
@@ -209,9 +187,9 @@ function SofiaContent({ persona }) {
   const a = persona.accent;
 
   const items = [
-    { title: "Smoked Desserts Are Having a Moment", tag: "TikTok Trend", aspect: "video", platform: "Reels" },
-    { title: "Creator Spotlight: @smokeandlens", tag: "Food Blogger", aspect: "3/4", platform: "Blog" },
-    { title: "Best Angles for Shooting Smoked Food", tag: "Technique", aspect: "4/3", platform: "Reels" },
+    { title: "Smoked Desserts Are Having a Moment", tag: "TikTok Trend", aspect: "video", platform: "Reels", prompt: "A picture of smoked peaches with ice cream" },
+    { title: "Creator Spotlight: @smokeandlens", tag: "Food Blogger", aspect: "3/4", platform: "Blog", prompt: "A picture of a food blogger with smoked brisket" },
+    { title: "Best Angles for Shooting Smoked Food", tag: "Technique", aspect: "4/3", platform: "Reels", prompt: "A picture of smoked ribs from the side" },
   ];
 
   return (
@@ -221,7 +199,7 @@ function SofiaContent({ persona }) {
         {items.map((item, i) => (
           <article key={i} className="rounded-2xl overflow-hidden" style={{ backgroundColor: "white", border: "1px solid #E8E6E0" }}>
             <div className="relative">
-              <ImagePlaceholder aspect={item.aspect} />
+              <ImagePlaceholder aspect={item.aspect} prompt={item.prompt} />
               <span className="absolute top-2 left-2 text-[10px] px-2 py-0.5 rounded-full" style={{ backgroundColor: a + "80", color: "white" }}>{item.platform}</span>
             </div>
             <div className="p-4">
@@ -241,8 +219,8 @@ function WaltContent({ persona }) {
   const a = persona.accent;
 
   const items = [
-    { title: "Running a BBQ Joint at 60", subtitle: "A profile of a pitmaster in Memphis", aspect: "3/4" },
-    { title: "The Story Behind Central Texas Post-Oak", subtitle: "Tradition and craft", aspect: "2/1" },
+    { title: "Running a BBQ Joint at 60", subtitle: "A profile of a pitmaster in Memphis", aspect: "3/4", prompt: "A picture of a pitmaster tending an offset smoker" },
+    { title: "The Story Behind Central Texas Post-Oak", subtitle: "Tradition and craft", aspect: "2/1", prompt: "A picture of post oak trees and barbecue pits in Central Texas" },
   ];
 
   return (
@@ -251,7 +229,7 @@ function WaltContent({ persona }) {
       <div className="space-y-6">
         {items.map((item, i) => (
           <article key={i} className="rounded-xl overflow-hidden" style={{ backgroundColor: "#251F1C", border: `1px solid ${a}30` }}>
-            <ImagePlaceholder aspect={item.aspect} />
+            <ImagePlaceholder aspect={item.aspect} prompt={item.prompt} />
             <div className="p-5">
               <h3 className="text-lg font-bold" style={{ color: t }}>{item.title}</h3>
               <p className="text-base mt-1 opacity-80" style={{ color: t }}>{item.subtitle}</p>
@@ -269,13 +247,13 @@ function CaseyContent({ persona }) {
   const a = persona.accent;
 
   const flavorPaths = [
-    { name: "The Smoke Traditions of South America", aspect: "video" },
-    { name: "Fermented + Smoked: A Flavor Exploration", aspect: "4/3" },
+    { name: "The Smoke Traditions of South America", aspect: "video", prompt: "A picture of an Argentine asado grill with meat" },
+    { name: "Fermented + Smoked: A Flavor Exploration", aspect: "4/3", prompt: "A picture of kimchi and smoked brisket together" },
   ];
 
   const items = [
-    { title: "Whole Smoked Cauliflower with Gochujang", tag: "Korean + Fusion", aspect: "square" },
-    { title: "Pitmaster in Oaxaca — Mole Technique", tag: "Cultural", aspect: "video" },
+    { title: "Whole Smoked Cauliflower with Gochujang", tag: "Korean + Fusion", aspect: "square", prompt: "A picture of a whole smoked cauliflower with gochujang glaze" },
+    { title: "Pitmaster in Oaxaca — Mole Technique", tag: "Cultural", aspect: "video", prompt: "A picture of an Oaxacan pitmaster preparing mole" },
   ];
 
   return (
@@ -284,7 +262,7 @@ function CaseyContent({ persona }) {
       <div className="flex gap-3 overflow-x-auto pb-4">
         {flavorPaths.map((fp, i) => (
           <div key={i} className="shrink-0 w-48 rounded-2xl overflow-hidden" style={{ border: `2px solid ${a}30` }}>
-            <ImagePlaceholder aspect={fp.aspect} />
+            <ImagePlaceholder aspect={fp.aspect} prompt={fp.prompt} />
             <div className="p-3 bg-white">
               <h3 className="text-sm font-semibold" style={{ color: t }}>{fp.name}</h3>
             </div>
@@ -295,7 +273,7 @@ function CaseyContent({ persona }) {
       <div className="space-y-4">
         {items.map((item, i) => (
           <article key={i} className="flex gap-4 p-4 rounded-xl" style={{ backgroundColor: "white", border: "1px solid #E8E0D8" }}>
-            <ImagePlaceholder aspect={item.aspect} className="w-24 shrink-0 rounded-lg" />
+            <ImagePlaceholder aspect={item.aspect} className="w-24 shrink-0 rounded-lg" prompt={item.prompt} />
             <div className="min-w-0">
               <h4 className="font-semibold" style={{ color: t }}>{item.title}</h4>
               <span className="text-xs mt-1" style={{ color: a }}>{item.tag}</span>

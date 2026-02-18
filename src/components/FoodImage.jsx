@@ -1,6 +1,7 @@
 import { FOOD_IMAGES } from '../data';
+import { ImagePlaceholder } from './ImagePlaceholder';
 
-/** Renders food as an image when available, otherwise gradient + emoji fallback */
+/** Renders food as an image when available, otherwise gray placeholder (indicates image dimensions) */
 export function FoodImage({ foodKey, name, gradient, emoji, className = "" }) {
   const src = foodKey ? FOOD_IMAGES[foodKey] : null;
   return (
@@ -8,9 +9,7 @@ export function FoodImage({ foodKey, name, gradient, emoji, className = "" }) {
       {src ? (
         <img src={src} alt={name || foodKey} className="w-full h-full object-cover block" />
       ) : (
-        <div className="w-full h-full flex items-center justify-center" style={{ background: gradient }}>
-          <span className="text-2xl">{emoji}</span>
-        </div>
+        <ImagePlaceholder fill className="w-full h-full rounded-none" prompt={`A picture of ${name || foodKey || 'the dish'}`} />
       )}
     </div>
   );

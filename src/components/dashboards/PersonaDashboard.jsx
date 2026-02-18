@@ -14,7 +14,86 @@ import { GrillControlSection } from '../GrillControlSection';
 import { HelpSection } from '../HelpSection';
 import { MealPlannerSection } from '../MealPlannerSection';
 import { ContentSection } from '../ContentSection';
+import { MyCooksSection } from '../MyCooksSection';
 import { lerp3Color } from '../../utils/color';
+
+/** Nav config per persona: icon, label (optional), view. view=null means non-navigable. */
+const NAV_CONFIG = {
+  dave: [
+    { icon: "grill", view: "grill" },
+    { icon: "recipes", view: "recipes" },
+    { icon: "help", view: "help" },
+    { icon: "planner", view: "planner" },
+    { icon: "content", view: "content" },
+  ],
+  priya: [
+    { icon: "home", label: "Home", view: "home" },
+    { icon: "discover", label: "Discover", view: "content", accentOnHome: true },
+    { icon: "grill", label: "Grill", view: "grill" },
+    { icon: "recipes", label: "Recipes", view: "recipes" },
+    { icon: "help", label: "Help", view: "help" },
+    { icon: "planner", label: "Plan", view: "planner" },
+  ],
+  "tom-linda": [
+    { icon: "home", label: "Home", view: "home" },
+    { icon: "grill", label: "Grill", view: "grill" },
+    { icon: "recipes", label: "Recipes", view: "recipes" },
+    { icon: "help", label: "Help", view: "help" },
+    { icon: "planner", label: "Planner", view: "planner" },
+    { icon: "content", label: "Content", view: "content" },
+  ],
+  marcus: [
+    { icon: "cook", label: "Cook", view: "grill" },
+    { icon: "recipes", label: "Recipes", view: "recipes" },
+    { icon: "help", label: "Help", view: "help" },
+    { icon: "content", label: "Learn", view: "content" },
+    { icon: "planner", label: "Plan", view: "planner" },
+  ],
+  jen: [
+    { icon: "cook", view: "grill" },
+    { icon: "recipes", view: "recipes" },
+    { icon: "help", view: "help" },
+    { icon: "planner", view: "planner" },
+    { icon: "content", view: "content" },
+  ],
+  ray: [
+    { icon: "grill", view: "grill" },
+    { icon: "recipes", view: "recipes" },
+    { icon: "help", view: "help" },
+    { icon: "planner", view: "planner" },
+    { icon: "content", view: "content" },
+  ],
+  sofia: [
+    { icon: "home", label: "Home", view: "home" },
+    { icon: "discover", label: "Discover", view: "content", accentOnHome: true },
+    { icon: "grill", label: "Grill", view: "grill" },
+    { icon: "help", label: "Help", view: "help" },
+    { icon: "planner", label: "Plan", view: "planner" },
+    { icon: "camera", label: "My Cooks", view: "my-cooks" },
+    { icon: "recipes", label: "Recipes", view: "recipes" },
+  ],
+  walt: [
+    { icon: "grill", label: "Grill", view: "grill" },
+    { icon: "recipes", label: "Recipes", view: "recipes" },
+    { icon: "help", label: "Help", view: "help" },
+    { icon: "planner", label: "Weekend", view: "planner" },
+    { icon: "content", label: "Pit", view: "content" },
+  ],
+  casey: [
+    { icon: "discover", label: "Explore", view: "content", accentOnHome: true },
+    { icon: "cook", label: "Cook", view: "grill" },
+    { icon: "recipes", label: "Recipes", view: "recipes" },
+    { icon: "help", label: "Help", view: "help" },
+    { icon: "planner", label: "Plan", view: "planner" },
+  ],
+  default: [
+    { icon: "grill", view: "grill" },
+    { icon: "recipes", view: "recipes" },
+    { icon: "help", view: "help" },
+    { icon: "planner", view: "planner" },
+    { icon: "content", view: "content" },
+  ],
+};
 
 const DASHBOARDS = {
   dave: DaveDashboard,
@@ -87,100 +166,80 @@ function GenericDashboard({ persona, onRecipeClick, onRecipesTabClick, onGrillTa
   );
 }
 
+/** Shared bottom nav — always visible, highlights active tab. */
+function BottomNav({ items, view, setView, persona, isDark }) {
+  const navBg = isDark ? '#0F0A08' : 'white';
+  const navBorder = isDark ? '#2A1F1A' : '#E8E6E0';
+  const t = persona.textColor;
+  const a = persona.accent;
+
+  return (
+    <nav className="sticky bottom-0 left-0 right-0 z-10 flex justify-around py-3 border-t shrink-0 w-full" style={{ borderColor: navBorder, backgroundColor: navBg }}>
+      {items.map((item) => {
+        const isActive = item.view === view || (view === 'home' && item.accentOnHome);
+        const hasLabel = !!item.label;
+        return (
+          <button
+            key={item.icon + (item.label || '')}
+            onClick={item.view != null ? () => setView(item.view) : undefined}
+            disabled={item.view == null}
+            className={`flex flex-col items-center gap-1 ${hasLabel ? 'text-sm' : 'p-2'} ${item.view == null ? 'opacity-40 cursor-default' : ''}`}
+            style={{ color: isActive ? a : isDark ? t : '#888' }}
+          >
+            <Icon name={item.icon} size={hasLabel ? 22 : 22} />
+            {hasLabel && <span className="font-medium">{item.label}</span>}
+          </button>
+        );
+      })}
+    </nav>
+  );
+}
+
 export function PersonaDashboard({ persona, onRecipeClick }) {
   const [view, setView] = useState('home');
   const DashboardComponent = DASHBOARDS[persona.id] || GenericDashboard;
+  const navItems = NAV_CONFIG[persona.id] || NAV_CONFIG.default;
 
   const isDark = persona.id === 'dave' || persona.id === 'ray';
   const isWalt = persona.id === 'walt';
-  const bg = view === 'recipes' ? (isDark ? '#1C1210' : isWalt ? '#1A1614' : '#FFFBF5')
-    : view === 'grill' ? (isDark ? '#1C1210' : isWalt ? '#1A1614' : '#FFFBF5')
-    : null;
-  const navBg = isDark ? '#0F0A08' : 'white';
-  const navBorder = isDark ? '#2A1F1A' : '#E8E6E0';
+  const contentBg = isDark ? '#1C1210' : isWalt ? '#1A1614' : '#FFFBF5';
 
-  if (view === 'recipes') {
-    return (
-      <div className="min-h-screen flex flex-col" style={{ backgroundColor: bg || '#FFFBF5' }}>
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <RecipesSection persona={persona} onRecipeClick={onRecipeClick} />
-        </div>
-        <nav className="flex justify-around py-3 border-t shrink-0" style={{ borderColor: navBorder, backgroundColor: navBg }}>
-          <button onClick={() => setView('home')} className="p-2 opacity-60" style={{ color: isDark ? persona.textColor : '#666' }}><Icon name="home" size={22} /></button>
-          <button className="p-2 font-bold" style={{ color: persona.accent }}><Icon name="recipes" size={22} /></button>
-        </nav>
-      </div>
+  let content;
+  if (view === 'home') {
+    content = (
+      <DashboardComponent
+        persona={persona}
+        onRecipeClick={onRecipeClick}
+        onRecipesTabClick={() => setView('recipes')}
+        onGrillTabClick={() => setView('grill')}
+        onHelpTabClick={() => setView('help')}
+        onPlannerTabClick={() => setView('planner')}
+        onContentTabClick={() => setView('content')}
+        noNav
+      />
     );
-  }
-
-  if (view === 'grill') {
-    return (
-      <div className="min-h-screen flex flex-col" style={{ backgroundColor: bg || (isDark ? '#1C1210' : '#FFFBF5') }}>
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <GrillControlSection persona={persona} />
-        </div>
-        <nav className="flex justify-around py-3 border-t shrink-0" style={{ borderColor: navBorder, backgroundColor: navBg }}>
-          <button onClick={() => setView('home')} className="p-2 opacity-60" style={{ color: isDark ? persona.textColor : '#666' }}><Icon name="home" size={22} /></button>
-          <button className="p-2 font-bold" style={{ color: persona.accent }}><Icon name="grill" size={22} /></button>
-        </nav>
-      </div>
-    );
-  }
-
-  if (view === 'help') {
-    const helpBg = isDark ? '#1C1210' : isWalt ? '#1A1614' : '#FFFBF5';
-    return (
-      <div className="min-h-screen flex flex-col" style={{ backgroundColor: helpBg }}>
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <HelpSection persona={persona} />
-        </div>
-        <nav className="flex justify-around py-3 border-t shrink-0" style={{ borderColor: navBorder, backgroundColor: navBg }}>
-          <button onClick={() => setView('home')} className="p-2 opacity-60" style={{ color: isDark ? persona.textColor : '#666' }}><Icon name="home" size={22} /></button>
-          <button className="p-2 font-bold" style={{ color: persona.accent }}><Icon name="help" size={22} /></button>
-        </nav>
-      </div>
-    );
-  }
-
-  if (view === 'planner') {
-    const plannerBg = isDark ? '#1C1210' : isWalt ? '#1A1614' : '#FFFBF5';
-    return (
-      <div className="min-h-screen flex flex-col" style={{ backgroundColor: plannerBg }}>
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <MealPlannerSection persona={persona} onRecipeClick={onRecipeClick} />
-        </div>
-        <nav className="flex justify-around py-3 border-t shrink-0" style={{ borderColor: navBorder, backgroundColor: navBg }}>
-          <button onClick={() => setView('home')} className="p-2 opacity-60" style={{ color: isDark ? persona.textColor : '#666' }}><Icon name="home" size={22} /></button>
-          <button className="p-2 font-bold" style={{ color: persona.accent }}><Icon name="planner" size={22} /></button>
-        </nav>
-      </div>
-    );
-  }
-
-  if (view === 'content') {
-    const contentBg = isDark ? '#1C1210' : isWalt ? '#1A1614' : '#FFFBF5';
-    return (
-      <div className="min-h-screen flex flex-col" style={{ backgroundColor: contentBg }}>
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <ContentSection persona={persona} />
-        </div>
-        <nav className="flex justify-around py-3 border-t shrink-0" style={{ borderColor: navBorder, backgroundColor: navBg }}>
-          <button onClick={() => setView('home')} className="p-2 opacity-60" style={{ color: isDark ? persona.textColor : '#666' }}><Icon name="home" size={22} /></button>
-          <button className="p-2 font-bold" style={{ color: persona.accent }}><Icon name="content" size={22} /></button>
-        </nav>
-      </div>
-    );
+  } else if (view === 'recipes') {
+    content = <RecipesSection persona={persona} onRecipeClick={onRecipeClick} />;
+  } else if (view === 'grill') {
+    content = <GrillControlSection persona={persona} />;
+  } else if (view === 'help') {
+    content = <HelpSection persona={persona} />;
+  } else if (view === 'planner') {
+    content = <MealPlannerSection persona={persona} onRecipeClick={onRecipeClick} />;
+  } else if (view === 'content') {
+    content = <ContentSection persona={persona} />;
+  } else if (view === 'my-cooks') {
+    content = <MyCooksSection persona={persona} onRecipeClick={onRecipeClick} />;
+  } else {
+    content = null;
   }
 
   return (
-    <DashboardComponent
-      persona={persona}
-      onRecipeClick={onRecipeClick}
-      onRecipesTabClick={() => setView('recipes')}
-      onGrillTabClick={() => setView('grill')}
-      onHelpTabClick={() => setView('help')}
-      onPlannerTabClick={() => setView('planner')}
-      onContentTabClick={() => setView('content')}
-    />
+    <div className="min-h-screen flex flex-col" style={{ backgroundColor: contentBg }}>
+      <div className="flex-1 flex flex-col min-h-0 overflow-auto">
+        {content}
+      </div>
+      <BottomNav items={navItems} view={view} setView={setView} persona={persona} isDark={isDark} />
+    </div>
   );
 }

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { FoodImage } from './FoodImage';
+import { ImagePlaceholder } from './ImagePlaceholder';
 import { FOOD } from '../data/food';
 
 /** Dave: Weekend cook scheduler — Sat/Sun time blocks. No weeknights. */
@@ -64,7 +65,9 @@ function PriyaPlanner({ persona, onRecipeClick }) {
       <h2 className="text-lg font-bold mb-4" style={{ color: t }}>Upcoming Cooks</h2>
       <div className="space-y-4">
         {projects.map((proj, i) => (
-          <div key={proj.name} className="p-5 rounded-xl" style={{ backgroundColor: "white", border: "1px solid rgba(232,151,107,0.2)" }}>
+          <div key={proj.name} className="rounded-xl overflow-hidden" style={{ backgroundColor: "white", border: "1px solid rgba(232,151,107,0.2)" }}>
+            <ImagePlaceholder aspect="video" className="rounded-t-xl" prompt={`A picture of a dinner party table with grilled dishes`} />
+            <div className="p-5">
             <div className="flex justify-between items-start mb-3">
               <div>
                 <h3 className="font-bold" style={{ color: t }}>{proj.name}</h3>
@@ -91,6 +94,7 @@ function PriyaPlanner({ persona, onRecipeClick }) {
               </div>
             </div>
             <button className="mt-4 text-sm font-medium" style={{ color: a }}>View timeline →</button>
+            </div>
           </div>
         ))}
       </div>
@@ -115,7 +119,9 @@ function TomLindaPlanner({ persona, onRecipeClick }) {
       <h2 className="text-xl font-bold mb-6" style={{ color: "#5C4A3A" }}>Your Events</h2>
       <div className="space-y-6">
         {events.map((ev) => (
-          <div key={ev.name} className="p-6 rounded-2xl" style={{ backgroundColor: "white", border: `2px solid ${a}40` }}>
+          <div key={ev.name} className="rounded-2xl overflow-hidden" style={{ backgroundColor: "white", border: `2px solid ${a}40` }}>
+            <ImagePlaceholder aspect="2/1" className="rounded-t-xl" prompt={`A picture of a backyard cookout spread with ribs and sides`} />
+            <div className="p-6">
             <h3 className="text-lg font-bold mb-1" style={{ color: "#5C4A3A" }}>{ev.name}</h3>
             <p className="text-base mb-4 opacity-80" style={{ color: "#5C4A3A" }}>{ev.date} · {ev.guests} guests</p>
             <div className="grid grid-cols-3 gap-4 mb-4">
@@ -148,6 +154,7 @@ function TomLindaPlanner({ persona, onRecipeClick }) {
               </div>
             )}
             <button className="mt-4 px-4 py-2 rounded-xl font-semibold text-sm" style={{ backgroundColor: a, color: "white" }}>Edit Menu</button>
+            </div>
           </div>
         ))}
       </div>

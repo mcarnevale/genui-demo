@@ -6,13 +6,13 @@ import { FOOD } from '../../data/food';
 const ROTATION = ["chicken", "burger", "pizza", "wings", "salmon", "queso"];
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 
-export function JenDashboard({ persona, onRecipeClick, onRecipesTabClick, onGrillTabClick, onHelpTabClick, onPlannerTabClick, onContentTabClick }) {
+export function JenDashboard({ persona, onRecipeClick, onRecipesTabClick, onGrillTabClick, onHelpTabClick, onPlannerTabClick, onContentTabClick, noNav }) {
   const t = persona.textColor;
   const a = persona.accent;
 
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: "#FFFBF5" }}>
-      <div className="flex-1 p-5 max-w-lg mx-auto">
+      <div className="flex-1 p-5 pb-20 max-w-lg mx-auto overflow-auto">
         {/* Tonight's Cook — speed first */}
         <div className="mb-6">
           <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3">Tonight&apos;s Cook</h3>
@@ -65,11 +65,13 @@ export function JenDashboard({ persona, onRecipeClick, onRecipesTabClick, onGril
         </button>
       </div>
 
-      <nav className="flex justify-around py-3 border-t bg-white">
-        {["cook", "recipes", "help", "planner", "content"].map((iconName, i) => (
-          <button key={iconName} onClick={i === 0 ? onGrillTabClick : i === 1 ? onRecipesTabClick : i === 2 ? onHelpTabClick : i === 3 ? onPlannerTabClick : i === 4 ? onContentTabClick : undefined} className="p-2 flex items-center justify-center" style={{ color: a }}><Icon name={iconName} size={22} /></button>
-        ))}
-      </nav>
+      {!noNav && (
+        <nav className="sticky bottom-0 left-0 right-0 z-10 flex justify-around py-3 border-t bg-white w-full">
+          {["cook", "recipes", "help", "planner", "content"].map((iconName, i) => (
+            <button key={iconName} onClick={i === 0 ? onGrillTabClick : i === 1 ? onRecipesTabClick : i === 2 ? onHelpTabClick : i === 3 ? onPlannerTabClick : i === 4 ? onContentTabClick : undefined} className="p-2 flex items-center justify-center" style={{ color: a }}><Icon name={iconName} size={22} /></button>
+          ))}
+        </nav>
+      )}
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { FOOD } from '../../data/food';
 
 const ROTATION = ["ribs", "brisket", "pork", "chicken", "wings", "burger"];
 
-export function DaveDashboard({ persona, onRecipeClick, onRecipesTabClick, onGrillTabClick, onHelpTabClick, onPlannerTabClick, onContentTabClick }) {
+export function DaveDashboard({ persona, onRecipeClick, onRecipesTabClick, onGrillTabClick, onHelpTabClick, onPlannerTabClick, onContentTabClick, noNav }) {
   const t = persona.textColor;
   const a = persona.accent;
   return (
@@ -26,7 +26,7 @@ export function DaveDashboard({ persona, onRecipeClick, onRecipesTabClick, onGri
       </div>
 
       {/* Rotation — horizontal scroll of small cards */}
-      <div className="flex-1 p-4 overflow-auto">
+      <div className="flex-1 p-4 pb-20 overflow-auto">
         <div className="text-xs font-medium uppercase tracking-wider opacity-50 mb-2" style={{ color: t }}>Your Rotation</div>
         <div className="flex gap-3 overflow-x-auto pb-2">
           {ROTATION.map(key => {
@@ -55,12 +55,13 @@ export function DaveDashboard({ persona, onRecipeClick, onRecipesTabClick, onGri
         </div>
       </div>
 
-      {/* Bottom nav — icons only, minimal */}
-      <nav className="flex justify-around py-3 border-t" style={{ borderColor: "#2A1F1A", backgroundColor: "#0F0A08" }}>
-        {["grill", "recipes", "help", "planner", "content"].map((iconName, i) => (
-          <button key={iconName} onClick={i === 0 ? onGrillTabClick : i === 1 ? onRecipesTabClick : i === 2 ? onHelpTabClick : i === 3 ? onPlannerTabClick : i === 4 ? onContentTabClick : undefined} className="p-2 opacity-60 hover:opacity-100 transition-opacity flex items-center justify-center" style={{ color: t }}><Icon name={iconName} size={22} /></button>
-        ))}
-      </nav>
+      {!noNav && (
+        <nav className="sticky bottom-0 left-0 right-0 z-10 flex justify-around py-3 border-t w-full" style={{ borderColor: "#2A1F1A", backgroundColor: "#0F0A08" }}>
+          {["grill", "recipes", "help", "planner", "content"].map((iconName, i) => (
+            <button key={iconName} onClick={i === 0 ? onGrillTabClick : i === 1 ? onRecipesTabClick : i === 2 ? onHelpTabClick : i === 3 ? onPlannerTabClick : i === 4 ? onContentTabClick : undefined} className="p-2 opacity-60 hover:opacity-100 transition-opacity flex items-center justify-center" style={{ color: t }}><Icon name={iconName} size={22} /></button>
+          ))}
+        </nav>
+      )}
     </div>
   );
 }

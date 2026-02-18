@@ -7,7 +7,7 @@ const COOK_LOG = [
   { date: "Feb 7", recipe: "Pulled Pork Shoulder", score: "3rd Place", key: "pork" },
 ];
 
-export function RayDashboard({ persona, onRecipeClick, onRecipesTabClick, onGrillTabClick, onHelpTabClick, onPlannerTabClick, onContentTabClick }) {
+export function RayDashboard({ persona, onRecipeClick, onRecipesTabClick, onGrillTabClick, onHelpTabClick, onPlannerTabClick, onContentTabClick, noNav }) {
   const t = persona.textColor;
   const a = persona.accent;
 
@@ -24,7 +24,7 @@ export function RayDashboard({ persona, onRecipeClick, onRecipesTabClick, onGril
       </div>
 
       {/* Cook Log */}
-      <div className="flex-1 p-4 overflow-auto">
+      <div className="flex-1 p-4 pb-20 overflow-auto">
         <div className="text-xs font-mono uppercase tracking-wider opacity-50 mb-3" style={{ color: t }}>Cook Log</div>
         <div className="space-y-2">
           {COOK_LOG.map((entry, i) => (
@@ -53,11 +53,13 @@ export function RayDashboard({ persona, onRecipeClick, onRecipesTabClick, onGril
         </div>
       </div>
 
-      <nav className="flex justify-around py-2 border-t" style={{ borderColor: "#1A1A1A", backgroundColor: "#0A0A0A" }}>
-        {["grill", "recipes", "help", "planner", "content"].map((iconName, i) => (
-          <button key={iconName} onClick={i === 0 ? onGrillTabClick : i === 1 ? onRecipesTabClick : i === 2 ? onHelpTabClick : i === 3 ? onPlannerTabClick : i === 4 ? onContentTabClick : undefined} className="p-2 opacity-60 hover:opacity-100 flex items-center justify-center" style={{ color: t }}><Icon name={iconName} size={20} /></button>
-        ))}
-      </nav>
+      {!noNav && (
+        <nav className="sticky bottom-0 left-0 right-0 z-10 flex justify-around py-2 border-t w-full" style={{ borderColor: "#1A1A1A", backgroundColor: "#0A0A0A" }}>
+          {["grill", "recipes", "help", "planner", "content"].map((iconName, i) => (
+            <button key={iconName} onClick={i === 0 ? onGrillTabClick : i === 1 ? onRecipesTabClick : i === 2 ? onHelpTabClick : i === 3 ? onPlannerTabClick : i === 4 ? onContentTabClick : undefined} className="p-2 opacity-60 hover:opacity-100 flex items-center justify-center" style={{ color: t }}><Icon name={iconName} size={20} /></button>
+          ))}
+        </nav>
+      )}
     </div>
   );
 }
