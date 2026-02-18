@@ -235,8 +235,8 @@ export function PersonaDashboard({ persona, onRecipeClick }) {
   }
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ backgroundColor: contentBg }}>
-      <div className="flex-1 flex flex-col min-h-0 overflow-auto">
+    <div className="min-h-screen flex flex-col w-full min-w-0 overflow-x-hidden" style={{ backgroundColor: contentBg }}>
+      <div className="flex-1 flex flex-col min-h-0 min-w-0 overflow-auto">
         {content}
       </div>
       <BottomNav items={navItems} view={view} setView={setView} persona={persona} isDark={isDark} />
